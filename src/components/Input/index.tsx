@@ -1,25 +1,38 @@
 "use client";
 
+import { HTMLInputTypeAttribute } from "react";
+
 type InputProps = React.HtmlHTMLAttributes<HTMLInputElement> & {
   name?: string;
   label: string;
+  placeholder?: string;
+  type?: HTMLInputTypeAttribute;
+  value?: string;
+  onChange?: (event: React.HtmlHTMLAttributes<HTMLInputElement>) => void;
 };
 
 export const Input = (props: InputProps) => {
-  const { label, ...others } = props;
+  const {
+    label,
+    placeholder,
+    type = "text",
+    value,
+    onChange,
+    ...others
+  } = props;
+
   return (
     <div className="flex flex-col">
-      <label
-        htmlFor={others?.id}
-        className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-      >
+      <label htmlFor={others?.id} className="block mb-2 text-sm font-medium">
         {label}
       </label>
       <input
+        className="bg-gray-50 border border-pink-300 text-gray-900 text-sm rounded-lg focus:outline-pink-500 focus:ring-pink-500 focus:border-pink-500 block w-full p-2.5"
+        placeholder={placeholder}
+        type={type}
+        value={value}
+        onChange={onChange}
         {...others}
-        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-        placeholder="John"
-        required
       />
     </div>
   );

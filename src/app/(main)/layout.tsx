@@ -1,8 +1,19 @@
 import { PropsWithChildren } from "react";
+import { redirect } from "next/navigation";
+
+import createClient from "@/utils/supabase/server";
 
 import { Sidebar } from "@/components";
 
-const Layout = ({ children }: PropsWithChildren) => {
+const Layout = async ({ children }: PropsWithChildren) => {
+  const supabase = createClient();
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) redirect("/login");
+
   return (
     <section className="h-screen w-screen overflow-hidden">
       <div className="flex">

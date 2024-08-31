@@ -9,7 +9,7 @@ type ModalProps = PropsWithChildren & {
   show: boolean;
   onClose: () => void;
   header: React.ReactNode | string;
-  footer: React.ReactNode;
+  footer?: React.ReactNode;
 };
 
 export const Modal = ({
@@ -58,8 +58,12 @@ export const Modal = ({
                 <div className="flex-1">{children}</div>
               </div>
               {/* MODAL FOOTER */}
-              <hr className="h-px my-4 bg-gray-200 border-0 dark:bg-gray-700" />
-              <div className="flex px-5 py-2 ">{footer}</div>
+              {footer && (
+                <>
+                  <hr className="h-px my-4 bg-gray-200 border-0 dark:bg-gray-700" />
+                  <div className="flex px-5 py-2 ">{footer}</div>
+                </>
+              )}
             </div>
           </Card>
         </div>

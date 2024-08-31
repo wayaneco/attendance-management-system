@@ -7,7 +7,7 @@ type CardProps = PropsWithChildren & {
 };
 export const Card = ({ children, className = "" }: CardProps) => {
   return (
-    <div className={`rounded-md shadow-sm bg-gray-100 p-4 ${className}`}>
+    <div className={`rounded-md shadow-sm bg-white p-8 ${className}`}>
       {children}
     </div>
   );

@@ -1,9 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
+
+import createClient from "@/utils/supabase/client";
+
+import logOutUser from "@/actions/login/logout-user";
 
 import * as Profile from "@/assets/images/profile.png";
 
@@ -12,13 +16,13 @@ const SIDEBAR_ITEMS = [
     path: "/attendance",
     label: "Attendance",
   },
+  // {
+  //   path: "/schedule",
+  //   label: "Schedule",
+  // },
   {
-    path: "/schedule",
-    label: "Schedule",
-  },
-  {
-    path: "/forms",
-    label: "Forms",
+    path: "/sections",
+    label: "Sections",
   },
   {
     path: "/class-record",
@@ -28,16 +32,27 @@ const SIDEBAR_ITEMS = [
     path: "/generate-report",
     label: "Generate Report ",
   },
-  {
-    path: "/others",
-    label: "Others",
-  },
 ];
 
 export const Sidebar = () => {
+  const supabase = createClient();
+  const router = useRouter();
+
   const [isCollapse, setIsCollapse] = useState<boolean>(false);
 
   const pathname = usePathname();
+
+  useEffect(() => {
+    const { data: authSubscription } = supabase.auth.onAuthStateChange(
+      (_, session) => {
+        if (!session) {
+          router.replace("/login");
+        }
+      }
+    );
+
+    return () => authSubscription.subscription.unsubscribe();
+  }, []);
 
   return (
     <div
@@ -68,8 +83,18 @@ export const Sidebar = () => {
         <div className="mb-2">
           <div className="mx-4">
             <div
-              className={`w-full p-5 rounded-md cursor-pointer transition-colors hover:bg-pink-500 hover:text-gray-50 bg-white text-gray-700
-        `}
+              className="w-full p-5 rounded-md cursor-pointer transition-colors hover:bg-pink-500 hover:text-gray-50 bg-white text-gray-700"
+              onClick={async () => {
+                try {
+                  const response = await logOutUser();
+
+                  if (!response.ok) throw response?.message;
+
+                  router.replace("/login");
+                } catch (error) {
+                  console.log(error);
+                }
+              }}
             >
               <div className="flex items-center">
                 <span>Logout</span>

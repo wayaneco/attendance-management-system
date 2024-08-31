@@ -1,19 +1,29 @@
-import { Button, Card, Input } from "@/components";
+import { redirect } from "next/navigation";
 
-const Page = () => {
+import createClient from "@/utils/supabase/server";
+import logInUser from "@/actions/login/login-user";
+import { Card } from "@/components";
+
+import { LoginForm } from "./component";
+
+const Page = async () => {
+  const supabase = createClient();
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (user) redirect("/");
+
   return (
-    <div className="login-bg h-screen w-screen flex items-center justify-center">
+    <section className="login-bg h-screen w-screen flex items-center justify-center">
       <div className="w-[450px]">
         <Card className="p-8 !shadow-pink-500">
           <div className="text-lg mb-4 text-center">Welcome, Login</div>
-          <form>
-            <Input label="Email" id="email" name="email" />
-            <Input label="Password" id="password" name="password" />
-            <Button className="mt-4 w-full">Login</Button>
-          </form>
+          <LoginForm logInUser={logInUser} />
         </Card>
       </div>
-    </div>
+    </section>
   );
 };
 

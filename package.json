@@ -9,13 +9,17 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@hookform/resolvers": "^3.9.0",
     "@supabase/ssr": "^0.5.1",
+    "@supabase/supabase-js": "^2.45.3",
     "dayjs": "^1.11.13",
     "next": "14.2.7",
     "react": "^18",
     "react-dom": "^18",
+    "react-hook-form": "^7.53.0",
     "react-tailwindcss-datepicker": "^1.7.2",
-    "react-tailwindcss-select": "^1.8.5"
+    "react-tailwindcss-select": "^1.8.5",
+    "yup": "^1.4.0"
   },
   "devDependencies": {
     "@types/node": "^20",
